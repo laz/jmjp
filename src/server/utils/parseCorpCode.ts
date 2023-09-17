@@ -1,7 +1,8 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { fetchCorpCode } from '../fetches';
+
 import AdmZip from 'adm-zip';
+import fetchCorpCode from '../fetches/fetchCorpCode';
 
 /**
  * 고유번호 전체 목록 파일 저장
