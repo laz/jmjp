@@ -1,14 +1,29 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fetchCorpCode } from '../fetches';
+import AdmZip from 'adm-zip';
+
+/**
+ * 고유번호 전체 목록 파일 저장
+ * TODO: 에러 처리?
+ */
+const writeCorpCodeToDisk = (corpCodeZipFile: AdmZip) => {
+  // ...data/${process.env.CORP_CODE_FILENAME}
+  const targetPath = path.join(__dirname, '../../../data');
+  corpCodeZipFile.extractAllTo(targetPath);
+};
 
 /**
  * https://opendart.fss.or.kr/api/corpCode.xml
- * 고유번호 전체 목록 받아서 파일로 저장
- * TODO: better name
+ * 고유번호 전체 파일 저장 및 문자열로 리턴
  */
-const parseCorpCode = async (corpCodeInBinary: Blob) => {
-  // TODO: binary -> text
+const parseCorpCode = async (corpCodeArrayBuffer: ArrayBuffer) => {
+  const corpCodeZipFile = new AdmZip(Buffer.from(corpCodeArrayBuffer));
+
+  writeCorpCodeToDisk(corpCodeZipFile);
+
+  const data = corpCodeZipFile.readAsText(process.env.CORP_CODE_FILENAME ?? '', 'utf-8');
+  return data;
 };
 
 /**
@@ -30,7 +45,7 @@ const readCorpCodeFromDisk = () => {
  * @returns 고유번호 전체 목록
  */
 export const getCorpCode = async () => {
-  let file;
+  let file: string = '';
 
   // 파일 존재하는지 체크
   try {
@@ -41,8 +56,8 @@ export const getCorpCode = async () => {
 
     // 없다면 새로 파일 가져오기
     try {
-      const corpCodeInBinary = await fetchCorpCode();
-      const corpCode = await parseCorpCode(corpCodeInBinary);
+      const corpCodeArrayBuffer = await fetchCorpCode();
+      const corpCode = await parseCorpCode(corpCodeArrayBuffer);
       // TODO:  파일 디스크에 저장
 
       file = corpCode;

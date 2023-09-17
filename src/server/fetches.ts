@@ -1,6 +1,7 @@
-const customFetch = async (url: string, type: 'json' | 'blob' = 'json') => {
+const customFetch = async (url: string, type: 'json' | 'arrayBuffer' = 'json') => {
   const res = await fetch(url, { cache: 'no-cache' });
-  const data = await (type === 'blob' ? res.blob() : res.json());
+
+  const data = await (type === 'arrayBuffer' ? res.arrayBuffer() : res.json());
 
   return data;
 };
@@ -10,5 +11,5 @@ export const fetchCorpCode = async () => {
   // TODO: URL 분리
   const URL = `https://opendart.fss.or.kr/api/corpCode.xml?crtfc_key=${API_KEY}`;
 
-  return customFetch(URL, 'blob');
+  return customFetch(URL, 'arrayBuffer');
 };

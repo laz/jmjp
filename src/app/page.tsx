@@ -3,7 +3,7 @@ import styles from './page.module.css';
 import { getCorpCode } from '@/server/utils/parseCorpCode';
 
 export default async function Home() {
-  await getCorpCode();
+  const corpCode = await getCorpCode();
 
   return (
     <main className={styles.main}>
