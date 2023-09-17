@@ -1,3 +1,5 @@
+import camelcaseKeys from 'camelcase-keys';
+
 const _fetch = (url: string) => {
   // TODO: case conversion
   return fetch(url, {
@@ -5,11 +7,11 @@ const _fetch = (url: string) => {
   });
 };
 
-export const customFetch = async <T>(url: string) => {
+export const customFetch = async <T extends Record<string, unknown>>(url: string) => {
   const res = await _fetch(url);
 
   const data = (await res.json()) as T;
-  return data;
+  return camelcaseKeys(data, { deep: true });
 };
 
 export const customFetchArrayBuffer = async (url: string) => {

@@ -14,7 +14,7 @@ interface FinancialStatementParams {
   fsDiv: FsDiv;
 }
 
-interface FinancialStatementResponse {
+interface FinancialStatementItem {
   /** 접수번호 */
   recptNo: string;
   /** 보고서 코드 */
@@ -62,8 +62,30 @@ interface FinancialStatementResponse {
   currency: string;
 }
 
+type FinancialStatementResponse = {
+  status: number;
+  message: string;
+  list: FinancialStatementItem[];
+};
+
 export const fetchFinancialStatement = async ({ corpCode, bsnsYear, reprtCode, fsDiv }: FinancialStatementParams) => {
   const URL = `https://opendart.fss.or.kr/api/fnlttSinglAcntAll.json?crtfc_key=${API_KEY}&corp_code=${corpCode}&bsns_year=${bsnsYear}&reprt_code=${reprtCode}&fs_div=${fsDiv}`;
 
-  return customFetch<FinancialStatementResponse>(URL);
+  const data = await customFetch<FinancialStatementResponse>(URL);
+  return parseFinancialStatement(data);
+};
+
+/**
+ * 재무제표 구분 별로 쪼개기
+ */
+const parseFinancialStatement = (fs: FinancialStatementResponse) => {
+  const list = fs.list;
+
+  return {
+    bs: [list.filter((item) => item.sjDiv === 'BS')],
+    is: [list.filter((item) => item.sjDiv === 'IS')],
+    cis: [list.filter((item) => item.sjDiv === 'CIS')],
+    cf: [list.filter((item) => item.sjDiv === 'CF')],
+    sce: [list.filter((item) => item.sjDiv === 'SCE')],
+  };
 };
