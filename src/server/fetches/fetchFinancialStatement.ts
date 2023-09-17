@@ -82,10 +82,10 @@ const parseFinancialStatement = (fs: FinancialStatementResponse) => {
   const list = fs.list;
 
   return {
-    bs: [list.filter((item) => item.sjDiv === 'BS')],
-    is: [list.filter((item) => item.sjDiv === 'IS')],
-    cis: [list.filter((item) => item.sjDiv === 'CIS')],
-    cf: [list.filter((item) => item.sjDiv === 'CF')],
-    sce: [list.filter((item) => item.sjDiv === 'SCE')],
+    bs: list.filter((item) => item.sjDiv === 'BS'),
+    is: list.filter((item) => item.sjDiv === 'IS'),
+    cis: list.filter((item) => item.sjDiv === 'CIS'),
+    cf: list.filter((item) => item.sjDiv === 'CF'),
+    sce: list.filter((item) => item.sjDiv === 'SCE'),
   };
 };
