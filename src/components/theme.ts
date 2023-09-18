@@ -36,7 +36,7 @@ const theme = extendTheme({
       styleOverrides: {
         root: ({ ownerState }) => ({
           ...(ownerState.color === 'primary' && {
-            backgroundColor: '#4338ca',
+            backgroundColor: '#CF9FFF',
           }),
         }),
       },
