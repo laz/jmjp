@@ -14,7 +14,7 @@ interface FinancialStatementParams {
   fsDiv: FsDiv;
 }
 
-interface FinancialStatementItem {
+export interface FinancialStatementItem {
   /** 접수번호 */
   recptNo: string;
   /** 보고서 코드 */
