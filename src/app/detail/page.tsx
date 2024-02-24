@@ -1,14 +1,16 @@
 import BS from '@/components/BS';
-import { fetchFinancialStatement } from '@/server/fetches/fetchFinancialStatement';
+import { getFinancialStatements } from '@/server/data/financialStatement';
 import { Sheet, Grid } from '@mui/joy';
 
 const Page = async () => {
-  const fs = await fetchFinancialStatement({
+  const fs = await getFinancialStatements({
     corpCode: '00671978', // 그리티,
     bsnsYear: '2023',
     reprtCode: '11013',
     fsDiv: 'OFS',
   });
+
+  if (!fs) return <span>oops...</span>;
 
   return (
     <main>

@@ -1,4 +1,4 @@
-import { FinancialStatementItem } from '@/server/fetches/fetchFinancialStatement';
+import { FinancialStatementItem } from '@/server/data/financialStatement';
 import { Table, Typography } from '@mui/joy';
 
 interface Props {
