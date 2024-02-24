@@ -1,24 +1,28 @@
 import fs from 'node:fs';
 import path from 'node:path';
-
 import AdmZip from 'adm-zip';
-import fetchCorpCode from '../fetches/fetchCorpCode';
-
 import chalk from 'chalk';
+import DART_API_URLS from '../constants/apiUrls';
+import { customFetchArrayBuffer } from '../utils/customFetch';
+import { urlWithParameters } from '../utils/urls';
 
 const CORP_CODE_PATH = path.join(__dirname, process.env.CORP_CODE_PATH);
 
-/**
- * 고유번호 전체 목록 파일 저장
- */
+const fetchCorpCode = () => {
+  const url = urlWithParameters({
+    url: DART_API_URLS.CORP_CODE,
+    parameters: {
+      crtfc_key: process.env.DART_API_KEY,
+    },
+  });
+
+  return customFetchArrayBuffer(url);
+};
+
 const writeCorpCodeToDisk = (corpCodeZipFile: AdmZip) => {
   corpCodeZipFile.extractAllTo(CORP_CODE_PATH);
 };
 
-/**
- * https://opendart.fss.or.kr/api/corpCode.xml
- * 고유번호 전체 파일 저장 및 문자열로 리턴
- */
 const parseAndWriteCorpCode = async (corpCodeArrayBuffer: ArrayBuffer) => {
   const corpCodeZipFile = new AdmZip(Buffer.from(corpCodeArrayBuffer));
 
