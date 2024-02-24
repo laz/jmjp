@@ -9,12 +9,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@emotion/react": "^11.11.1",
-    "@emotion/styled": "^11.11.0",
-    "@mui/joy": "^5.0.0-beta.7",
-    "@types/node": "20.6.1",
-    "@types/react": "18.2.21",
-    "@types/react-dom": "18.2.7",
     "adm-zip": "^0.5.10",
     "camelcase-keys": "^9.0.0",
     "eslint": "8.49.0",
@@ -22,10 +16,16 @@
     "next": "^14.1.0",
     "original-fs": "^1.2.0",
     "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "typescript": "5.2.2"
+    "react-dom": "18.2.0"
   },
   "devDependencies": {
-    "@types/adm-zip": "^0.5.1"
+    "@types/adm-zip": "^0.5.1",
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@mui/joy": "^5.0.0-beta.7",
+    "@types/node": "20.6.1",
+    "@types/react": "18.2.21",
+    "@types/react-dom": "18.2.7",
+    "typescript": "5.2.2"
   }
 }
