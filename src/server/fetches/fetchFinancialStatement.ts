@@ -1,7 +1,7 @@
 import { FsDiv, ReprtCode } from '@/types/dart';
 import { customFetch } from '../utils/customFetch';
-
-const API_KEY = process.env.API_KEY;
+import { urlWithParameters } from '../utils/urls';
+import DART_API_URLS from '../constants/apiUrls';
 
 interface FinancialStatementParams {
   /** 고유번호 */
@@ -69,9 +69,18 @@ type FinancialStatementResponse = {
 };
 
 export const fetchFinancialStatement = async ({ corpCode, bsnsYear, reprtCode, fsDiv }: FinancialStatementParams) => {
-  const URL = `https://opendart.fss.or.kr/api/fnlttSinglAcntAll.json?crtfc_key=${API_KEY}&corp_code=${corpCode}&bsns_year=${bsnsYear}&reprt_code=${reprtCode}&fs_div=${fsDiv}`;
+  const url = urlWithParameters({
+    url: DART_API_URLS.FINANCIAL_STATEMENT,
+    parameters: {
+      crtfc_key: process.env.DART_API_KEY,
+      corp_code: corpCode,
+      bsns_year: bsnsYear,
+      reprt_code: reprtCode,
+      fs_div: fsDiv,
+    },
+  });
 
-  const data = await customFetch<FinancialStatementResponse>(URL);
+  const data = await customFetch<FinancialStatementResponse>(url);
   return parseFinancialStatement(data);
 };
 

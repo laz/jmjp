@@ -6,7 +6,7 @@ import fetchCorpCode from '../fetches/fetchCorpCode';
 
 import chalk from 'chalk';
 
-const CORP_CODE_PATH = path.join(__dirname, process.env.CORP_CODE_PATH ?? '');
+const CORP_CODE_PATH = path.join(__dirname, process.env.CORP_CODE_PATH);
 
 /**
  * 고유번호 전체 목록 파일 저장
@@ -24,7 +24,7 @@ const parseAndWriteCorpCode = async (corpCodeArrayBuffer: ArrayBuffer) => {
 
   writeCorpCodeToDisk(corpCodeZipFile);
 
-  const data = corpCodeZipFile.readAsText(process.env.CORP_CODE_FILENAME ?? '', 'utf-8');
+  const data = corpCodeZipFile.readAsText(process.env.CORP_CODE_FILENAME, 'utf-8');
   return data;
 };
 
@@ -33,7 +33,7 @@ const parseAndWriteCorpCode = async (corpCodeArrayBuffer: ArrayBuffer) => {
  * binary에서 변환된 상태
  */
 const readCorpCodeFromDisk = () => {
-  const targetFile = path.join(CORP_CODE_PATH, process.env.CORP_CODE_FILENAME ?? '');
+  const targetFile = path.join(CORP_CODE_PATH, process.env.CORP_CODE_FILENAME);
 
   const file = fs.readFileSync(targetFile, {
     encoding: 'utf-8',
