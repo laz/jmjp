@@ -4,21 +4,21 @@ import path from 'node:path';
 import AdmZip from 'adm-zip';
 import fetchCorpCode from '../fetches/fetchCorpCode';
 
+const CORP_CODE_PATH = path.join(__dirname, process.env.CORP_CODE_PATH ?? '');
+
 /**
  * 고유번호 전체 목록 파일 저장
  * TODO: 에러 처리?
  */
 const writeCorpCodeToDisk = (corpCodeZipFile: AdmZip) => {
-  // ...data/${process.env.CORP_CODE_FILENAME}
-  const targetPath = path.join(__dirname, '../../../data');
-  corpCodeZipFile.extractAllTo(targetPath);
+  corpCodeZipFile.extractAllTo(CORP_CODE_PATH);
 };
 
 /**
  * https://opendart.fss.or.kr/api/corpCode.xml
  * 고유번호 전체 파일 저장 및 문자열로 리턴
  */
-const parseCorpCode = async (corpCodeArrayBuffer: ArrayBuffer) => {
+const parseAndWriteCorpCode = async (corpCodeArrayBuffer: ArrayBuffer) => {
   const corpCodeZipFile = new AdmZip(Buffer.from(corpCodeArrayBuffer));
 
   writeCorpCodeToDisk(corpCodeZipFile);
@@ -32,8 +32,7 @@ const parseCorpCode = async (corpCodeArrayBuffer: ArrayBuffer) => {
  * binary에서 변환된 상태
  */
 const readCorpCodeFromDisk = () => {
-  // TODO: 위치 변경
-  const targetFile = path.join(__dirname, '../../../data', process.env.CORP_CODE_FILENAME ?? '');
+  const targetFile = path.join(CORP_CODE_PATH, process.env.CORP_CODE_FILENAME ?? '');
 
   const file = fs.readFileSync(targetFile, {
     encoding: 'utf-8',
@@ -46,11 +45,11 @@ const readCorpCodeFromDisk = () => {
  * @returns 고유번호 전체 목록
  */
 export const getCorpCode = async () => {
-  let file: string = '';
+  let corpCode: string = '';
 
   // 파일 존재하는지 체크
   try {
-    file = readCorpCodeFromDisk();
+    corpCode = readCorpCodeFromDisk();
   } catch {
     // TODO: chalk
     console.info('Corp code file does not exists.');
@@ -58,10 +57,7 @@ export const getCorpCode = async () => {
     // 없다면 새로 파일 가져오기
     try {
       const corpCodeArrayBuffer = await fetchCorpCode();
-      const corpCode = await parseCorpCode(corpCodeArrayBuffer);
-      // TODO:  파일 디스크에 저장
-
-      file = corpCode;
+      corpCode = await parseAndWriteCorpCode(corpCodeArrayBuffer);
     } catch (error) {
       console.info('Fetching corp code failed.');
       console.error(error);
@@ -70,5 +66,5 @@ export const getCorpCode = async () => {
     }
   }
 
-  return file;
+  return corpCode;
 };

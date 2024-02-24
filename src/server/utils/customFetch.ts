@@ -1,9 +1,8 @@
 import camelcaseKeys from 'camelcase-keys';
 
 const _fetch = (url: string) => {
-  // TODO: case conversion
   return fetch(url, {
-    cache: 'no-cache',
+    cache: 'no-cache', // 응답 파일 크기때문에 캐싱 불가능
   });
 };
 
@@ -15,7 +14,7 @@ export const customFetch = async <T extends Record<string, unknown>>(url: string
 };
 
 export const customFetchArrayBuffer = async (url: string) => {
-  const res = await fetch(url);
+  const res = await _fetch(url);
 
   const data = await res.arrayBuffer();
   return data;

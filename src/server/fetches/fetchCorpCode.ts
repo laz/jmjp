@@ -1,12 +1,8 @@
+import DART_API_URLS from '../constants/apiUrls';
 import { customFetchArrayBuffer } from '../utils/customFetch';
 
-const API_KEY = process.env.API_KEY;
-
-const fetchCorpCode = async () => {
-  // TODO: URL 분리
-  const URL = `https://opendart.fss.or.kr/api/corpCode.xml?crtfc_key=${API_KEY}`;
-
-  return customFetchArrayBuffer(URL);
+const fetchCorpCode = () => {
+  return customFetchArrayBuffer(DART_API_URLS.CORP_CODE);
 };
 
 export default fetchCorpCode;
